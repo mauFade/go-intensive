@@ -17,7 +17,8 @@ func NewOrderRepository(db *sql.DB) *OrderRepository {
 }
 
 func (repository *OrderRepository) Save(order *entity.Order) error {
-	_, err := repository.DB.Exec("INSERT INTO orders (id, price, tax, final_price), VALUES(?,?,?,?)", order.ID, order.Price, order.Tax, order.FinalPrice)
+	_, err := repository.DB.Exec("Insert into orders (id, price, tax, final_price) Values(?,?,?,?)",
+		order.ID, order.Price, order.Tax, order.FinalPrice)
 
 	if err != nil {
 		return err
