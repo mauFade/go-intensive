@@ -1,9 +1,9 @@
 package kafkaclient
 
-import ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
+import "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 
-func Consume(topics []string, server string, msgChannel chan *ckafka.Message) {
-	consumer, err := ckafka.NewConsumer(ckafka.ConfigMap{
+func Consume(topics []string, server string, msgChannel chan *kafka.Message) {
+	consumer, err := kafka.NewConsumer(kafka.ConfigMap{
 		"bootstrap.servers": server,
 		"group.id":          "goapp",
 		"auto.offset.reset": "earliest",
