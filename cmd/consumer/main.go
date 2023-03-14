@@ -9,10 +9,12 @@ import (
 	"github.com/mauFade/go-intensive/internal/infra/database"
 	"github.com/mauFade/go-intensive/internal/usecase"
 	"github.com/mauFade/go-intensive/pkg/kafkaclient"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	conn, err := sql.Open("sqlite3", "./orders.bd")
+	conn, err := sql.Open("sqlite3", "./orders.db")
 
 	if err != nil {
 		panic(err)
@@ -29,12 +31,15 @@ func main() {
 	topics := []string{"orders"}
 	host := "host.docker.internal:9094"
 
+	fmt.Println("Kafka consumer started")
 	go kafkaclient.Consume(topics, host, kafkaMessageChannel)
 
 	kafkaWorker(kafkaMessageChannel, usecase)
 }
 
 func kafkaWorker(messageChan *kafka.Message, uc usecase.CalculateFinalPrice) {
+	fmt.Println("Kafka worker started")
+
 	for msg := range messageChan {
 		var orderInputDTO usecase.OrderInputDTO
 
